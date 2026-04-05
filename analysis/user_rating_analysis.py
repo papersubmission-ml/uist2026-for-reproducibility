@@ -275,6 +275,22 @@ def run_friedman_tests(df: pd.DataFrame, unit_col: str, analysis_level: str) -> 
         )
         if len(pivot) == 0:
             continue
+        if len(pivot) < 2:
+            rows.append(
+                {
+                    "metric": metric,
+                    "metric_label": METRIC_DISPLAY[metric],
+                    "analysis_level": analysis_level,
+                    "unit_column": unit_col,
+                    "n_units": len(pivot),
+                    "chi_square": float("nan"),
+                    "p_value": float("nan"),
+                    "kendalls_w": float("nan"),
+                    "test_status": "insufficient_n",
+                }
+            )
+            continue
+
         stat, p_value = friedmanchisquare(*[pivot[model].values for model in MODEL_ORDER])
         kendall_w = stat / (len(pivot) * (len(MODEL_ORDER) - 1))
         rows.append(
@@ -283,13 +299,14 @@ def run_friedman_tests(df: pd.DataFrame, unit_col: str, analysis_level: str) -> 
                 "metric_label": METRIC_DISPLAY[metric],
                 "analysis_level": analysis_level,
                 "unit_column": unit_col,
-                "n_sessions": len(pivot),
+                "n_units": len(pivot),
                 "chi_square": stat,
                 "p_value": p_value,
                 "kendalls_w": kendall_w,
+                "test_status": "ok",
             }
         )
-    return pd.DataFrame(rows).rename(columns={"n_sessions": "n_units"})
+    return pd.DataFrame(rows)
 
 
 def run_pairwise_tests(df: pd.DataFrame, unit_col: str, analysis_level: str) -> pd.DataFrame:
@@ -308,11 +325,25 @@ def run_pairwise_tests(df: pd.DataFrame, unit_col: str, analysis_level: str) -> 
         metric_rows = []
         pairs = list(itertools.combinations(MODEL_ORDER, 2))
         raw_p_values = []
+        raw_p_value_indices = []
         for model_a, model_b in pairs:
             sample_a = pivot[model_a].to_numpy()
             sample_b = pivot[model_b].to_numpy()
-            stat, p_value = wilcoxon(sample_a, sample_b, zero_method="wilcox")
-            raw_p_values.append(p_value)
+            if len(sample_a) < 2:
+                stat = float("nan")
+                p_value = float("nan")
+                test_status = "insufficient_n"
+            elif np.allclose(sample_a, sample_b):
+                stat = 0.0
+                p_value = 1.0
+                test_status = "all_zero_differences"
+                raw_p_values.append(p_value)
+                raw_p_value_indices.append(len(metric_rows))
+            else:
+                stat, p_value = wilcoxon(sample_a, sample_b, zero_method="wilcox")
+                test_status = "ok"
+                raw_p_values.append(p_value)
+                raw_p_value_indices.append(len(metric_rows))
             metric_rows.append(
                 {
                     "metric": metric,
@@ -328,13 +359,19 @@ def run_pairwise_tests(df: pd.DataFrame, unit_col: str, analysis_level: str) -> 
                     "p_value": p_value,
                     "mean_difference": float(np.mean(sample_a - sample_b)),
                     "median_difference": float(np.median(sample_a - sample_b)),
+                    "test_status": test_status,
                 }
             )
 
         adjusted = holm_correct(raw_p_values)
-        for row, corrected_p in zip(metric_rows, adjusted):
+        corrected_lookup = {
+            row_index: corrected_p
+            for row_index, corrected_p in zip(raw_p_value_indices, adjusted)
+        }
+        for row_index, row in enumerate(metric_rows):
+            corrected_p = corrected_lookup.get(row_index, float("nan"))
             row["p_value_holm"] = corrected_p
-            row["significant_holm_0_05"] = corrected_p < 0.05
+            row["significant_holm_0_05"] = bool(corrected_p == corrected_p and corrected_p < 0.05)
             rows.append(row)
 
     return pd.DataFrame(rows)
