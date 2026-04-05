@@ -1,7 +1,0 @@
-{
-  "analysis_backend": "local",
-  "quality_metric_column": "perplexity",
-  "quality_metric_display_name": "Perplexity",
-  "judge_model": "",
-  "embedding_model": "bert-base-uncased"
-}
