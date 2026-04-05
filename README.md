@@ -10,7 +10,6 @@ uist2026-for-reproducibility/
 ├── data/HAI-UIST-DATA/
 ├── shared/json_export_loader.py
 ├── benchmark/
-│   ├── automatic_evaluation.py
 │   ├── llm_judge_augment_json.py
 │   ├── visualize_results.py
 │   └── outputs/
@@ -70,31 +69,9 @@ export OPENAI_API_KEY="sk-..."
 Used by:
 
 - `benchmark/llm_judge_augment_json.py`
-- `benchmark/automatic_evaluation.py --analysis-backend llm_as_judge`
 - `analysis/feedback_llm_judge.py`
 
 ## Benchmark
-
-Local benchmark:
-
-Computes automatic benchmark scores from the raw session JSON files.
-
-```bash
-python benchmark/automatic_evaluation.py \
-  --input data/HAI-UIST-DATA \
-  --output benchmark/outputs/automatic_evaluation
-```
-
-OpenAI benchmark:
-
-Runs the same benchmark with OpenAI-based judge and embedding scoring.
-
-```bash
-python benchmark/automatic_evaluation.py \
-  --input data/HAI-UIST-DATA \
-  --output benchmark/outputs/automatic_evaluation \
-  --analysis-backend llm_as_judge
-```
 
 LLM-as-a-Judge JSON augmentation:
 
@@ -107,16 +84,6 @@ python benchmark/llm_judge_augment_json.py \
   --model gpt-5-nano \
   --reasoning-effort low \
   --timestamp full_llm_judge_gpt5nano_low
-```
-
-Benchmark plots:
-
-Plots figures from the CSV outputs written by `automatic_evaluation.py`.
-
-```bash
-python benchmark/visualize_results.py \
-  --input benchmark/outputs/automatic_evaluation \
-  --output benchmark/outputs/automatic_evaluation/figures
 ```
 
 ## Analysis
