@@ -221,17 +221,31 @@ def compute_distribution_counts(ratings: pd.DataFrame) -> pd.DataFrame:
     return counts
 
 
+def safe_metric_correlation(pair_df: pd.DataFrame, metric_x: str, metric_y: str, method: str) -> float:
+    if len(pair_df) < 2:
+        return np.nan
+
+    x = pair_df[metric_x]
+    y = pair_df[metric_y]
+    if x.nunique(dropna=True) < 2 or y.nunique(dropna=True) < 2:
+        return np.nan
+
+    return x.corr(y, method=method)
+
+
+def safe_pairwise_correlation_values(pair_df: pd.DataFrame, metric_x: str, metric_y: str) -> tuple[float, float]:
+    pearson_r = safe_metric_correlation(pair_df, metric_x, metric_y, method="pearson")
+    spearman_rho = safe_metric_correlation(pair_df, metric_x, metric_y, method="spearman")
+    return pearson_r, spearman_rho
+
+
 def compute_pairwise_correlations(wide_ratings: pd.DataFrame) -> pd.DataFrame:
     rows = []
     for model in MODEL_ORDER:
         model_df = wide_ratings[wide_ratings["model"] == model]
         for metric_x, metric_y in RATING_PAIRS:
             pair_df = model_df[[metric_x, metric_y]].dropna()
-            pearson_r = np.nan
-            spearman_rho = np.nan
-            if len(pair_df) >= 2:
-                pearson_r = pair_df[metric_x].corr(pair_df[metric_y], method="pearson")
-                spearman_rho = pair_df[metric_x].corr(pair_df[metric_y], method="spearman")
+            pearson_r, spearman_rho = safe_pairwise_correlation_values(pair_df, metric_x, metric_y)
             rows.append(
                 {
                     "model": model,
@@ -253,7 +267,21 @@ def build_spearman_matrices(wide_ratings: pd.DataFrame) -> dict[str, pd.DataFram
     matrices: dict[str, pd.DataFrame] = {}
     for model in MODEL_ORDER:
         model_df = wide_ratings[wide_ratings["model"] == model]
-        matrix = model_df[METRIC_ORDER].corr(method="spearman")
+        matrix = pd.DataFrame(index=METRIC_ORDER, columns=METRIC_ORDER, dtype=float)
+        for metric_x in METRIC_ORDER:
+            for metric_y in METRIC_ORDER:
+                pair_df = model_df[[metric_x, metric_y]].dropna()
+                if metric_x == metric_y:
+                    matrix.loc[metric_x, metric_y] = (
+                        1.0 if model_df[metric_x].dropna().nunique() >= 1 else np.nan
+                    )
+                else:
+                    matrix.loc[metric_x, metric_y] = safe_metric_correlation(
+                        pair_df,
+                        metric_x,
+                        metric_y,
+                        method="spearman",
+                    )
         matrices[model] = matrix.reindex(index=METRIC_ORDER, columns=METRIC_ORDER)
     return matrices
 
@@ -503,8 +531,7 @@ def make_pairwise_scatter_figure(
     subplot_titles = []
     for metric_x, metric_y in RATING_PAIRS:
         pair_df = model_df[[metric_x, metric_y]].dropna()
-        pearson_r = pair_df[metric_x].corr(pair_df[metric_y], method="pearson") if len(pair_df) >= 2 else np.nan
-        spearman_rho = pair_df[metric_x].corr(pair_df[metric_y], method="spearman") if len(pair_df) >= 2 else np.nan
+        pearson_r, spearman_rho = safe_pairwise_correlation_values(pair_df, metric_x, metric_y)
         subplot_titles.append(
             (
                 f"{METRIC_DISPLAY[metric_x]} vs {METRIC_DISPLAY[metric_y]}"
@@ -624,8 +651,7 @@ def make_novelty_focus_scatter_figure(
         model_df = wide_ratings[wide_ratings["model"] == model].copy()
         for metric_x, metric_y in NOVELTY_FOCUS_PAIRS:
             pair_df = model_df[[metric_x, metric_y]].dropna()
-            pearson_r = pair_df[metric_x].corr(pair_df[metric_y], method="pearson") if len(pair_df) >= 2 else np.nan
-            spearman_rho = pair_df[metric_x].corr(pair_df[metric_y], method="spearman") if len(pair_df) >= 2 else np.nan
+            pearson_r, spearman_rho = safe_pairwise_correlation_values(pair_df, metric_x, metric_y)
             subplot_titles.append(
                 (
                     f"{MODEL_DISPLAY[model]}: {METRIC_DISPLAY[metric_x]} vs {METRIC_DISPLAY[metric_y]}"
@@ -745,8 +771,7 @@ def make_novelty_focus_line_figure(
         model_df = wide_ratings[wide_ratings["model"] == model].copy()
         for metric_x, metric_y in NOVELTY_FOCUS_PAIRS:
             pair_df = model_df[[metric_x, metric_y]].dropna()
-            pearson_r = pair_df[metric_x].corr(pair_df[metric_y], method="pearson") if len(pair_df) >= 2 else np.nan
-            spearman_rho = pair_df[metric_x].corr(pair_df[metric_y], method="spearman") if len(pair_df) >= 2 else np.nan
+            pearson_r, spearman_rho = safe_pairwise_correlation_values(pair_df, metric_x, metric_y)
             subplot_titles.append(
                 (
                     f"{MODEL_DISPLAY[model]}: {METRIC_DISPLAY[metric_x]} vs {METRIC_DISPLAY[metric_y]}"
