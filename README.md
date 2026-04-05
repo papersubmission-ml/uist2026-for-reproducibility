@@ -75,7 +75,18 @@ Used by:
 
 LLM-as-a-Judge JSON augmentation:
 
-Adds `LLM_as_a_Judge` ratings to copied JSON files for downstream analysis.
+Creates augmented copies of the input JSON files under
+`benchmark/outputs/llm_judge_augmented_outputs/<timestamp>/augmented_json/`.
+For each session and for each AI suggestion (`LLM-B`, `LLM-CF`, `LLM-CT`), it
+adds a new `LLM_as_a_Judge` field inside `AI_Suggestions[<model>]`. That field
+contains four 1-5 ratings:
+
+- `Action_Clarity`
+- `Feasibility`
+- `Goal_Alignment`
+- `Insight_Novelty`
+
+The original input JSON files are not modified.
 
 ```bash
 python benchmark/llm_judge_augment_json.py \
