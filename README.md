@@ -140,20 +140,12 @@ python analysis/plan_source_analysis.py \
 
 Counterfactual study cleaned CSV builder:
 
-Builds the legacy per-model CSV used by the counterfactual analysis notebook
-directly from the JSON exports. Each output row corresponds to one session and
-one AI suggestion model (`LLM-CT`, `LLM-CF`, `LLM-B`), and includes:
+Builds the legacy per-model CSV for the counterfactual analysis notebook from
+the JSON exports. It includes participant ratings, selected final-plan fields,
+plan-source similarity matrices, and `llm_judge_*` scores.
 
-- session metadata copied from the JSON export
-- participant ratings from `AI_Suggestions[<model>]["ratings"]`
-- selected final-plan text and index
-- plan-source similarity matrices rebuilt from the JSON text
-- `llm_judge_*` columns from `AI_Suggestions[<model>]["LLM_as_a_Judge"]`
-
-If the raw input JSON does not already contain `LLM_as_a_Judge`, the script
-automatically looks for matching augmented JSON files under
-`benchmark/outputs/llm_judge_augmented_outputs/*/augmented_json/`. You can also
-pass those files explicitly with `--judge-inputs`.
+If `LLM_as_a_Judge` is not in the raw JSON, the script automatically loads the
+matching augmented JSON under `benchmark/outputs/llm_judge_augmented_outputs/`.
 
 ```bash
 python analysis/counterfactual_study_analysis.py \
