@@ -1,32 +1,3 @@
-"""
-Analyze plan-list diversity and candidate-plan source attribution from JSON exports.
-
-This script is JSON-native because the downloaded session exports contain fields
-that are not reliably recoverable from the staged CSV alone:
-
-- `User_Plans_Initial`
-- `User_Plans_Final`
-- `Final_Selected_PlanNumber`
-- `AI_Suggestions`
-
-Method summary:
-
-1. Build two shared text spaces over all initial plans, final plans, and AI
-   suggestions:
-   - a lexical space using TF-IDF followed by truncated SVD (LSA)
-   - a semantic space using SentenceTransformer embeddings
-2. Compute within-list diversity as the mean pairwise distance
-   (`1 - cosine_similarity`) among plans in the same list, separately for each
-   similarity metric.
-3. For each final candidate plan, find the best match among:
-   - the participant's HAI initial plans
-   - the session's AI suggestions (`LLM-B`, `LLM-CF`, `LLM-CT`)
-   If the best score is below the configured threshold, classify the plan as
-   `new`.
-4. Use `Final_Selected_PlanNumber` to identify the source of the selected final
-   plan for both lexical and semantic similarity.
-"""
-
 from __future__ import annotations
 
 import argparse

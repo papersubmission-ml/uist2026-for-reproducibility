@@ -1,14 +1,3 @@
-"""
-Augment session JSON exports with LLM-as-a-judge ratings.
-
-This script reads exported session JSON files, filters out invalid top-level
-owner ids, and asks an OpenAI model to rate each AI suggestion
-(`LLM-B`, `LLM-CF`, `LLM-CT`).
-
-It writes augmented JSON copies plus flat JSONL/CSV records for downstream
-analysis. The original input files are left unchanged.
-"""
-
 from __future__ import annotations
 
 import argparse

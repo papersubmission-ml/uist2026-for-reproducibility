@@ -1,24 +1,3 @@
-"""
-JSON-native user rating analysis from session exports.
-
-This script analyzes participant ratings that are already stored in the
-downloaded `HAI-UIST-DATA/*.json` files. It is intentionally separate from the
-legacy automatic benchmark pipeline because it answers a different research
-question: which AI suggestion type participants preferred on the in-product
-rating axes.
-
-Outputs:
-- `ratings_long.csv`
-- `session_metadata.csv`
-- `descriptive_statistics.csv`
-- `condition_descriptives.csv`
-- `friedman_tests.csv`
-- `pairwise_wilcoxon.csv`
-- `analysis_summary.md`
-- figures in `figures/`
-- including a combined all-metrics boxplot
-"""
-
 from __future__ import annotations
 
 import argparse

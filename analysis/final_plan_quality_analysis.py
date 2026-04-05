@@ -1,21 +1,3 @@
-"""
-JSON-native final plan analysis from session exports.
-
-This script reads `HAI-UIST-DATA/*.json` directly and analyzes the human-authored
-initial plans, final plans, and the selected final plan. It does not use the
-legacy automatic benchmark pipeline or the older staged CSV workflow.
-
-Outputs:
-- `final_plan_session_metrics.csv`
-- `selected_final_vs_ai_similarity.csv`
-- `participant_aggregated_final_plan_metrics.csv`
-- `condition_descriptives.csv`
-- `participant_delta_tests.csv`
-- `closest_model_counts.csv`
-- `analysis_summary.md`
-- figures in `figures/`
-"""
-
 from __future__ import annotations
 
 import argparse

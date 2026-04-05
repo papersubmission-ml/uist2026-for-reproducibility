@@ -1,7 +1,3 @@
-"""
-Shared utility functions for the ICUI experiments codebase.
-"""
-
 import ast
 import json
 import re

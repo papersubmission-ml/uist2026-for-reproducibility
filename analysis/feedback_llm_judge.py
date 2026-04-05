@@ -1,25 +1,3 @@
-"""
-JSON-native LLM-as-a-judge analysis for free-text feedback.
-
-This script extracts the top-level `feedback` fields from the downloaded
-`HAI-UIST-DATA/*.json` exports and uses an OpenAI model to code each analyzable
-response with a structured qualitative rubric. It replaces the earlier
-keyword-based heuristic workflow.
-
-Outputs:
-- `feedback_long.csv`
-- `feedback_prompt_summary.csv`
-- `feedback_llm_judgments.jsonl`
-- `feedback_llm_judgments.csv`
-- `feedback_llm_primary_theme_summary.csv`
-- `feedback_llm_facet_summary.csv`
-- `feedback_llm_attribute_summary.csv`
-- `feedback_llm_examples.csv`
-- `feedback_manual_coding_sheet.csv`
-- `feedback_analysis_summary.md`
-- figures in `figures/`
-"""
-
 from __future__ import annotations
 
 import argparse

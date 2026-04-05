@@ -1,20 +1,3 @@
-"""
-Plotly analysis of AI suggestion ratings from exported session JSON files.
-
-This script loads each requested JSON export file separately, extracts either
-`AI_Suggestions[*].ratings` or `AI_Suggestions[*].LLM_as_a_Judge` data for
-`LLM-B`, `LLM-CF`, and `LLM-CT`, and
-writes a timestamped output folder containing:
-
-- `ratings_long.csv`
-- `ratings_wide.csv`
-- `distribution_counts.csv`
-- `pairwise_correlations.csv`
-- `analysis_summary.md`
-- Plotly HTML figures for rating distributions and rating-pair correlations
-- Matching PNG exports for each Plotly figure
-"""
-
 from __future__ import annotations
 
 import argparse

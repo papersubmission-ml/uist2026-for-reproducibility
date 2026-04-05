@@ -1,10 +1,3 @@
-"""
-Visualize automatic-evaluation outputs for the reproducibility package.
-
-Reads the CSVs produced by `automatic_evaluation.py` and writes summary tables
-plus a small set of publication-style figures.
-"""
-
 import argparse
 import json
 import os
