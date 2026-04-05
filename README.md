@@ -15,6 +15,7 @@ uist2026-for-reproducibility/
 │   └── outputs/
 └── analysis/
     ├── counterfactual_study_analysis.py
+    ├── counterfactual_study_plots.py
     ├── user_rating_analysis.py
     ├── final_plan_quality_analysis.py
     ├── plan_source_analysis.py
@@ -152,6 +153,17 @@ python analysis/counterfactual_study_analysis.py \
   --inputs data/HAI-UIST-DATA/all-completed-HAI-2026-03-27.json \
            data/HAI-UIST-DATA/all-completed-AIH-2026-03-27.json \
   --output-csv analysis/outputs/cleaned_data/df_all_cleaned_with_llm_judge_with_plan_source_vectors.csv
+```
+
+Counterfactual study plots:
+
+Builds the notebook-style tables and Plotly figures from the cleaned CSV.
+
+```bash
+python analysis/counterfactual_study_plots.py \
+  --input-csv analysis/outputs/cleaned_data/df_all_cleaned_with_llm_judge_with_plan_source_vectors.csv \
+  --output analysis/outputs/counterfactual_study/main \
+  --html-only
 ```
 
 ## Notes
