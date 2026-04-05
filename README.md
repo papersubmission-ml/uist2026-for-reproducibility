@@ -8,6 +8,7 @@ Reproducible workflow for the `uist2026-for-reproducibility` package.
 uist2026-for-reproducibility/
 ├── README.md
 ├── data/HAI-UIST-DATA/
+├── webapp/
 ├── shared/json_export_loader.py
 ├── benchmark/
 │   ├── llm_judge_augment_json.py
@@ -24,6 +25,9 @@ uist2026-for-reproducibility/
 ```
 
 ## Inputs
+
+`webapp/` stores the study website used to collect participant data and run the
+user-facing study flow.
 
 Required raw files:
 
