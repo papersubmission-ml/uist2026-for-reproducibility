@@ -44,8 +44,8 @@ python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
 python -m pip install \
-  numpy pandas matplotlib scipy scikit-learn \
-  plotly packaging tqdm pydantic openai torch transformers
+  "numpy<2" pandas matplotlib scipy scikit-learn \
+  plotly packaging tqdm pydantic openai torch "transformers<4.57"
 ```
 
 Optional:
@@ -56,6 +56,8 @@ python -m pip install sentence-transformers "kaleido<1"
 
 - `sentence-transformers`: needed for `analysis/plan_source_analysis.py`
 - `kaleido<1`: needed only for Plotly PNG export
+- If you already installed newer packages, repair the benchmark environment with:
+  `python -m pip install --upgrade "numpy<2" "transformers<4.57"`
 
 ## Environment Variable
 
