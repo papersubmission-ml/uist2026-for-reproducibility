@@ -18,7 +18,6 @@ uist2026-for-reproducibility/
     ├── final_plan_quality_analysis.py
     ├── plan_source_analysis.py
     ├── feedback_llm_judge.py
-    ├── plotly_ai_suggestion_analysis.py
     ├── UIST_evaluation_metrics.md
     └── outputs/
 ```
@@ -152,31 +151,6 @@ python analysis/feedback_llm_judge.py \
   --input data/HAI-UIST-DATA \
   --condition AIH \
   --output analysis/outputs/feedback_outputs/AIH
-```
-
-Plotly figures from human ratings:
-
-Builds interactive HTML figures from the original participant rating data.
-
-```bash
-python analysis/plotly_ai_suggestion_analysis.py \
-  --inputs data/HAI-UIST-DATA/all-completed-HAI-2026-03-27.json \
-           data/HAI-UIST-DATA/all-completed-AIH-2026-03-27.json \
-  --timestamp human_plotly \
-  --html-only
-```
-
-Plotly figures from LLM-as-a-Judge outputs:
-
-Builds the same interactive figures using `LLM_as_a_Judge` ratings.
-
-```bash
-python analysis/plotly_ai_suggestion_analysis.py \
-  --inputs benchmark/outputs/llm_judge_augmented_outputs/full_llm_judge_gpt5nano_low/augmented_json/all-completed-HAI-2026-03-27.json \
-           benchmark/outputs/llm_judge_augmented_outputs/full_llm_judge_gpt5nano_low/augmented_json/all-completed-AIH-2026-03-27.json \
-  --rating-source llm_judge \
-  --timestamp llm_judge_plotly \
-  --html-only
 ```
 
 ## Notes
