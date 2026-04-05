@@ -33,6 +33,9 @@ Required raw files:
 
 ## Setup
 
+Use Python 3.10 or higher. Python 3.11 is recommended. Python 3.9 will not
+work because several scripts use Python 3.10 type-union syntax.
+
 `venv` is recommended:
 
 ```bash
