@@ -17,7 +17,6 @@ uist2026-for-reproducibility/
     ├── user_rating_analysis.py
     ├── final_plan_quality_analysis.py
     ├── plan_source_analysis.py
-    ├── feedback_llm_judge.py
     ├── UIST_evaluation_metrics.md
     └── outputs/
 ```
@@ -68,7 +67,6 @@ export OPENAI_API_KEY="sk-..."
 Used by:
 
 - `benchmark/llm_judge_augment_json.py`
-- `analysis/feedback_llm_judge.py`
 
 ## Benchmark
 
@@ -136,21 +134,6 @@ Estimates whether final plans came from the initial plans, the AI suggestions, o
 python analysis/plan_source_analysis.py \
   --input data/HAI-UIST-DATA \
   --output analysis/outputs/plan_source_outputs/main
-```
-
-Feedback coding:
-
-Codes free-text participant feedback with an OpenAI rubric.
-
-```bash
-python analysis/feedback_llm_judge.py \
-  --input data/HAI-UIST-DATA \
-  --condition HAI \
-  --output analysis/outputs/feedback_outputs/HAI
-python analysis/feedback_llm_judge.py \
-  --input data/HAI-UIST-DATA \
-  --condition AIH \
-  --output analysis/outputs/feedback_outputs/AIH
 ```
 
 ## Notes
