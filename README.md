@@ -162,8 +162,7 @@ Builds the notebook-style tables and Plotly figures from the cleaned CSV.
 ```bash
 python analysis/counterfactual_study_plots.py \
   --input-csv analysis/outputs/cleaned_data/df_all_cleaned_with_llm_judge_with_plan_source_vectors.csv \
-  --output analysis/outputs/counterfactual_study/main \
-  --html-only
+  --output analysis/outputs/counterfactual_study/main
 ```
 
 ## Notes
