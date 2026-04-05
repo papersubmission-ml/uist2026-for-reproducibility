@@ -14,6 +14,7 @@ uist2026-for-reproducibility/
 │   ├── visualize_results.py
 │   └── outputs/
 └── analysis/
+    ├── counterfactual_study_analysis.py
     ├── user_rating_analysis.py
     ├── final_plan_quality_analysis.py
     ├── plan_source_analysis.py
@@ -52,6 +53,7 @@ python -m pip install sentence-transformers "kaleido<1"
 ```
 
 - `sentence-transformers`: needed for `analysis/plan_source_analysis.py`
+- `sentence-transformers`: also needed for `analysis/counterfactual_study_analysis.py`
 - `kaleido<1`: needed only for Plotly PNG export
 - If you already installed newer packages, repair the benchmark environment with:
   `python -m pip install --upgrade "numpy<2" "transformers<4.57"`
@@ -134,6 +136,30 @@ Estimates whether final plans came from the initial plans, the AI suggestions, o
 python analysis/plan_source_analysis.py \
   --input data/HAI-UIST-DATA \
   --output analysis/outputs/plan_source_outputs/main
+```
+
+Counterfactual study cleaned CSV builder:
+
+Builds the legacy per-model CSV used by the counterfactual analysis notebook
+directly from the JSON exports. Each output row corresponds to one session and
+one AI suggestion model (`LLM-CT`, `LLM-CF`, `LLM-B`), and includes:
+
+- session metadata copied from the JSON export
+- participant ratings from `AI_Suggestions[<model>]["ratings"]`
+- selected final-plan text and index
+- plan-source similarity matrices rebuilt from the JSON text
+- `llm_judge_*` columns from `AI_Suggestions[<model>]["LLM_as_a_Judge"]`
+
+If the raw input JSON does not already contain `LLM_as_a_Judge`, the script
+automatically looks for matching augmented JSON files under
+`benchmark/outputs/llm_judge_augmented_outputs/*/augmented_json/`. You can also
+pass those files explicitly with `--judge-inputs`.
+
+```bash
+python analysis/counterfactual_study_analysis.py \
+  --inputs data/HAI-UIST-DATA/all-completed-HAI-2026-03-27.json \
+           data/HAI-UIST-DATA/all-completed-AIH-2026-03-27.json \
+  --output-csv analysis/outputs/cleaned_data/df_all_cleaned_with_llm_judge_with_plan_source_vectors.csv
 ```
 
 ## Notes
