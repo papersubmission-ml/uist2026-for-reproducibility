@@ -29,10 +29,12 @@ uist2026-for-reproducibility/
 `webapp/` stores the study website used to collect participant data and run the
 user-facing study flow.
 
-Required raw files (We are currently in process of anonymizing step; we will be releasing the processed data once the paper is accepted):
+Required raw files:
 
 - `data/HAI-UIST-DATA/all-completed-HAI-2026-03-27.json`
 - `data/HAI-UIST-DATA/all-completed-AIH-2026-03-27.json`
+  
+We are currently in process of anonymizing step. We will be releasing the processed data once the paper is accepted.
 
 ## Setup
 
