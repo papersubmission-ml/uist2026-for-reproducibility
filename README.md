@@ -1,6 +1,6 @@
 # uist2026-for-reproducibility
 
-Reproducible workflow for the `uist2026-for-reproducibility` package.
+Reproducible workflow for  `uist2026-for-reproducibility`. 
 
 ## Tree
 
@@ -83,7 +83,7 @@ LLM-as-a-Judge JSON augmentation:
 
 Creates augmented copies of the input JSON files under
 `benchmark/outputs/llm_judge_augmented_outputs/<timestamp>/augmented_json/`.
-For each session and for each AI suggestion (`LLM-B`, `LLM-CF`, `LLM-CT`), it
+For each session and for each AI suggestion (`LLM-B`, `LLM-CF`, `LLM-AC`), it
 adds a new `LLM_as_a_Judge` field inside `AI_Suggestions[<model>]`. That field
 contains four 1-5 ratings:
 
@@ -107,7 +107,7 @@ python benchmark/llm_judge_augment_json.py \
 
 Participant ratings:
 
-Summarizes participant ratings for `LLM-B`, `LLM-CF`, and `LLM-CT`.
+Summarizes participant ratings for `LLM-B`, `LLM-CF`, and `LLM-AC`.
 
 ```bash
 python analysis/user_rating_analysis.py \
