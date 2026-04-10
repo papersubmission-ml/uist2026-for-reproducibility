@@ -34,7 +34,7 @@ Required raw files:
 - `data/HAI-UIST-DATA/all-completed-HAI-2026-03-27.json`
 - `data/HAI-UIST-DATA/all-completed-AIH-2026-03-27.json`
   
-We are currently in the process of anonymizing. We will be releasing the processed data once the paper is accepted.
+We are currently anonymizing the data and will release the processed dataset upon acceptance to ensure compliance with the review process.
 
 ## Setup
 
